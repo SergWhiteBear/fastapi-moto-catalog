@@ -1,8 +1,8 @@
 from datetime import datetime, timezone
 
 from sqlalchemy import (
-    Table, Column, Integer, Float, MetaData,
-    String, Text, DateTime, ForeignKey)
+    Table, Column, Integer, Float,
+    String, Text, DateTime, ForeignKey, MetaData)
 
 from src.database import Base
 
@@ -47,7 +47,8 @@ class Moto(Base):
     comments = Column(Text, nullable=False)
     url_image = Column(String(255), nullable=True)
     created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False)
-    updated_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc),
+                        onupdate=datetime.now(timezone.utc), nullable=False)
 
 
 class Engine(Base):
@@ -58,4 +59,5 @@ class Engine(Base):
     tact = Column(Integer, nullable=False)
     mileage = Column(Integer, nullable=False)
     created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False)
-    updated_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc), nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc),
+                        onupdate=datetime.now(timezone.utc), nullable=False)
