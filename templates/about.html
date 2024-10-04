@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Информация о мотоцикле{% endblock %}
+
+{%block style_page%}
+<link rel="stylesheet" href="{{ url_for('static', path='about.css') }}">
+{%endblock%}
+
+{% block content %}
+<div class="moto-details">
+    <img src="{{ moto.url_image }}" alt="{{ moto.name }}" class="moto-detail-image">
+
+    <h1 class="moto-detail-title">{{ moto.name }}</h1>
+
+    <p class="moto-detail-price">{{ moto.price }} ₽</p>
+
+    <div class="moto-detail-info">
+        <p><strong>Класс мотоцикла:</strong> {{ moto.moto_class }}</p>
+        <p><strong>Двигатель:</strong> {{ moto.engine }}</p>
+        <p><strong>Описание:</strong> {{ moto.comments }}</p>
+    </div>
+
+    <button class="add-to-cart-button">Добавить в корзину</button>
+</div>
+{% endblock %}

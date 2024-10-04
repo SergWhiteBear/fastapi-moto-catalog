@@ -1,0 +1,73 @@
+/* Стили для каталога */
+#catalog {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    margin-bottom: 80px;
+}
+
+/* Карточки мотоциклов */
+.moto-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    margin: 15px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.moto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Изображение мотоцикла */
+.image-container {
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+}
+
+.moto-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.moto-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+}
+
+/* Название мотоцикла */
+.moto-title {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Описание мотоцикла */
+.moto-description {
+    font-size: 0.9em;
+    line-height: 1.2;
+    margin: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* Цена мотоцикла */
+.moto-price {
+    font-size: 1.2em;
+    color: #27ae60;
+    font-weight: bold;
+}

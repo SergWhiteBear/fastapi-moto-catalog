@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Магазин мотоциклов{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', path='icons/moto_icon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', path='base.css') }}">
+
+    {% block style_page%}{% endblock %}
+
+</head>
+<body>
+<h1>Магазин мотоциклов</h1>
+<div class="menu-bar">
+    <a href="/" class="menu-item">
+        <img src="{{ url_for('static', path='icons/main.png') }}" alt="Главная">
+        Главная
+    </a>
+    <a href="/cart" class="menu-item">
+        <img src="{{ url_for('static', path='icons/bucket.png') }}" alt="Корзина">
+        Корзина
+        <span id="cart-count" class="cart-badge" style="display: none;">0</span> <!-- Элемент для количества товаров -->
+    </a>
+    <a href="/profile" class="menu-item">
+        <img src="{{ url_for('static', path='icons/profile.png') }}" alt="Профиль">
+        Профиль
+    </a>
+</div>
+
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>
+
