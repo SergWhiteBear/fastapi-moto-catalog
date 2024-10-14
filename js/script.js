@@ -25,7 +25,6 @@ function formatPrice(price) {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' ₽';
 }
 
-// Функция для получения данных с сервера
 function fetchMotos() {
     fetch("http://localhost:8000/moto/get_all")
         .then(response => {
@@ -35,7 +34,7 @@ function fetchMotos() {
             return response.json();
         })
         .then(data => {
-            displayMotos(data);
+            displayMotos(data);  // Передаем данные в функцию для отображения
         })
         .catch(error => {
             console.error('Ошибка при загрузке данных:', error);
@@ -43,69 +42,85 @@ function fetchMotos() {
 }
 
 // Функция для отображения мотоциклов
-function displayMotos(motos) {
+function displayMotos(motoDict) {
     const catalog = document.getElementById('catalog');
+    catalog.innerHTML = '';  // Очищаем каталог перед выводом новых данных
 
-    if (motos.length === 0) {
+    const categories = Object.keys(motoDict);  // Получаем ключи словаря, которые являются категориями
+
+    if (categories.length === 0) {
         catalog.innerHTML = '<p>Мотоциклы не найдены.</p>';
         return;
     }
 
-    motos.forEach(moto => {
-        const motoCard = document.createElement('div');
-        motoCard.classList.add('moto-card');
+    categories.forEach(category => {
 
-        // Создаем контейнер для изображения
-        const imageContainer = document.createElement('div');
-        imageContainer.classList.add('image-container'); // Добавляем класс для контейнера
+        const motoList = motoDict[category];  // Получаем список мотоциклов для этой категории
 
-        const img = document.createElement('img');
-        img.src = moto.url_image || 'https://via.placeholder.com/300'; // Если URL отсутствует
-        img.alt = moto.name || 'Мотоцикл';
-        img.classList.add('moto-image');
+        if (motoList.length === 0) {
+            const noMotosMessage = document.createElement('p');
+            noMotosMessage.textContent = 'Мотоциклы не найдены в этой категории.';
+            catalog.appendChild(noMotosMessage);
+            return;
+        }
 
-        imageContainer.appendChild(img);
-        motoCard.appendChild(imageContainer);
+        motoList.forEach(moto => {
+            const motoCard = document.createElement('div');
+            motoCard.classList.add('moto-card');
 
-        const title = document.createElement('h2');
-        title.textContent = moto.name || 'Название не указано';
-        title.classList.add('moto-title');
-        motoCard.appendChild(title);
+            // Создаем контейнер для изображения
+            const imageContainer = document.createElement('div');
+            imageContainer.classList.add('image-container');
 
-        const description = document.createElement('p');
-        description.textContent = moto.comments || 'Описание отсутствует';
-        description.classList.add('moto-description');
-        motoCard.appendChild(description);
+            const img = document.createElement('img');
+            img.src = moto.url_image || 'https://via.placeholder.com/300';  // Заглушка для отсутствующего изображения
+            img.alt = moto.name || 'Мотоцикл';
+            img.classList.add('moto-image');
 
-        const price = document.createElement('p');
-        price.textContent = moto.price ? `Цена: ${formatPrice(moto.price)}` : 'Цена не указана';
-        price.classList.add('moto-price');
-        motoCard.appendChild(price);
+            imageContainer.appendChild(img);
+            motoCard.appendChild(imageContainer);
 
-        const motoClass = document.createElement('p');
-        motoClass.textContent = `Класс: ${moto.moto_class}`;
-        motoClass.classList.add('moto-class');
-        motoCard.appendChild(motoClass);
+            const title = document.createElement('h2');
+            title.textContent = moto.name || 'Название не указано';
+            title.classList.add('moto-title');
+            motoCard.appendChild(title);
 
-        const engine = document.createElement('p');
-        engine.textContent = `Двигатель: ${moto.engine}`;
-        engine.classList.add('moto-engine');
-        motoCard.appendChild(engine);
+            const description = document.createElement('p');
+            description.textContent = moto.comments || 'Описание отсутствует';
+            description.classList.add('moto-description');
+            motoCard.appendChild(description);
 
-        const addButton = document.createElement('button');
-        addButton.textContent = 'Добавить в корзину';
-        addButton.classList.add('add-to-cart-button');
-        addButton.addEventListener('click', addToCart);
-        motoCard.appendChild(addButton);
+            const price = document.createElement('p');
+            price.textContent = moto.price ? `Цена: ${formatPrice(moto.price)}` : 'Цена не указана';
+            price.classList.add('moto-price');
+            motoCard.appendChild(price);
 
-        // Добавляем событие клика на всю карточку
-        motoCard.addEventListener('click', () => {
-            window.location.href = `/about/${moto.id}`; // Перенаправляем на страницу с описанием
+            const motoClass = document.createElement('p');
+            motoClass.textContent = `Класс: ${moto.moto_class}`;
+            motoClass.classList.add('moto-class');
+            motoCard.appendChild(motoClass);
+
+            const engine = document.createElement('p');
+            engine.textContent = `Двигатель: ${moto.engine_name}`;
+            engine.classList.add('moto-engine');
+            motoCard.appendChild(engine);
+
+            const addButton = document.createElement('button');
+            addButton.textContent = 'Добавить в корзину';
+            addButton.classList.add('add-to-cart-button');
+            addButton.addEventListener('click', addToCart);
+            motoCard.appendChild(addButton);
+
+            // Добавляем событие клика на всю карточку
+            motoCard.addEventListener('click', () => {
+                window.location.href = `/about/${moto.name}`;  // Перенаправляем на страницу с описанием
+            });
+
+            catalog.appendChild(motoCard);
         });
-
-        catalog.appendChild(motoCard);
     });
 }
 
 // Вызов функции для получения данных при загрузке страницы
 document.addEventListener('DOMContentLoaded', fetchMotos);
+

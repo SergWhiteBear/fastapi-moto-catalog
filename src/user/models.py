@@ -1,29 +1,30 @@
+import uuid
 from datetime import datetime, timezone
 
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import Table, Column, Integer, String, ForeignKey, JSON, Boolean, MetaData, DateTime
-
-from database import Base, metadata
+from sqlalchemy.dialects.postgresql import UUID
+from src.database import Base, metadata
 
 metadata = MetaData()
 
 role = Table(
     "role",
     metadata,
-    Column("id", Integer, primary_key=True),
-    Column("name", String, nullable=False),
+    Column("id", UUID(as_uuid=True), primary_key=True, default=uuid.uuid4),
+    Column("name", String, nullable=False, unique=True),
     Column("permissions", JSON),
 )
 
 user = Table(
     "user",
     metadata,
-    Column("id", Integer, primary_key=True),
+    Column("id",UUID(as_uuid=True), primary_key=True, default=uuid.uuid4),
     Column("email", String, nullable=False),
     Column("username", String, nullable=False),
     Column("registered_at", DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False),
-    Column("role_id", Integer, ForeignKey(role.c.id)),
-    Column("hashed_password", String, nullable=False, default="nopswd"),
+    Column("role", String, ForeignKey(role.c.name), onupdate="CASCADE"),
+    Column("hashed_password", String, nullable=True, default="nopswd"),
     Column("is_active", Boolean, default=True, nullable=False),
     Column("is_superuser", Boolean, default=False, nullable=False),
     Column("is_verified", Boolean, default=False, nullable=False),
@@ -31,12 +32,12 @@ user = Table(
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):
-    id = Column(Integer, primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, nullable=False, unique=True)
     email = Column(String, nullable=False)
     username = Column(String, nullable=False)
     registered_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False)
-    role_id = Column(Integer, ForeignKey(role.c.id))
-    hashed_password = Column(String, nullable=False, default="nopswd")
+    role = Column(String, ForeignKey(role.c.name), onupdate="CASCADE")
+    hashed_password = Column(String, nullable=True, default="nopswd")
     is_active: bool = Column(Boolean, default=True, nullable=False)
     is_superuser: bool = Column(Boolean, default=False, nullable=False)
     is_verified: bool = Column(Boolean, default=False, nullable=False)
