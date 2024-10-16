@@ -1,8 +1,9 @@
+from typing import Any
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, insert, update, delete
+from sqlalchemy import select, insert
 from src.database import get_async_session
 from fastapi import APIRouter, Depends, HTTPException
-from src.moto.models import moto, engine, Engine
+from src.moto.models import moto, engine, Engine, Moto
 from src.moto.schemas import MotoBase, EngineBase, EngineWrite, MotoWrite
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -12,18 +13,34 @@ router = APIRouter(
 )
 
 
+async def delete_model(model, model_id, session: AsyncSession = Depends(get_async_session)) -> dict[str, Any]:
+    existing_object = await session.get(model, model_id)
+    if not existing_object:
+        raise HTTPException(status_code=404, detail="Not Found")
+    await session.delete(existing_object)
+    await session.commit()
+    return {"status": 200, "msg": "Deleted Successfully"}
+
+async def update_model(model, model_update, model_id, session: AsyncSession = Depends(get_async_session)) -> dict:
+    existing_object = await session.get(model, model_id)
+    if not existing_object:
+        raise HTTPException(status_code=404, detail="Not Found")
+    for key, value in model_update.model_dump().items():
+        setattr(existing_object, key, value)
+    await session.commit()
+    await session.refresh(existing_object)
+    return {"updated_object": existing_object}
+
+
 @router.get("/get_engine")
 async def get_engine(
         engine_id: str,
         session: AsyncSession = Depends(get_async_session)
 ) -> dict[str, EngineBase]:
     try:
-        query = select(engine).where(engine.c.engine_id == engine_id)
-        result = await session.execute(query)
-        await session.commit()
-        engine_data = result.fetchone()
-        if engine_data:
-            return {f"{engine_id}": EngineBase.model_validate(engine_data)}
+        existing_engine = await session.get(Engine, engine_id)
+        if existing_engine:
+            return {f"{engine_id}": EngineBase.model_validate(existing_engine)}
         raise HTTPException(status_code=404, detail="Not Found")
     except SQLAlchemyError as db_error:
         await session.rollback()
@@ -45,25 +62,15 @@ async def add_engine(
         raise SQLAlchemyError(f"Database error: {db_error}")
 
 
-@router.patch("/update_engine")
+@router.put("/update_engine")
 async def update_engine(
         engine_id: str,
-        engine_update: EngineBase,
+        engine_update: EngineWrite,
         session: AsyncSession = Depends(get_async_session)
 ):
     try:
-        stmt = (
-            update(engine).
-            where(engine.c.engine_id == engine_id).
-            values(engine_update.model_dump(exclude_unset=True))
-        )
-        result = await session.execute(stmt)
-
-        if result.rowcount == 0:
-            raise HTTPException(status_code=404, detail="Not Found")
-
-        await session.commit()
-        return {"updated_engine": 200 }
+        responses = await update_model(Engine, engine_update, engine_id, session)
+        return responses
     except SQLAlchemyError as db_error:
         await session.rollback()
         raise SQLAlchemyError(f"Database error: {db_error}")
@@ -75,12 +82,8 @@ async def delete_engine(
         session: AsyncSession = Depends(get_async_session)
 ):
     try:
-        stmt = delete(engine).where(engine.c.engine_id == engine_id)
-        result = await session.execute(stmt)
-        await session.commit()
-        if result.rowcount == 0:
-            raise HTTPException(status_code=404, detail="Not Found")
-        return {"status": 200, "msg": "Deleted Successfully"}
+        response = await delete_model(engine, engine_id, session)
+        return response
     except SQLAlchemyError as db_error:
         await session.rollback()
         raise HTTPException(status_code=500, detail=f"Database error: {db_error}")
@@ -90,21 +93,18 @@ async def delete_engine(
 async def get_moto(
         frame_id: str,
         session: AsyncSession = Depends(get_async_session)
-) -> dict[str, list[MotoBase]]:
+) -> dict[str, MotoBase]:
     try:
-        query = select(moto).where(moto.c.frame_id == frame_id)
-        result = await session.execute(query)
-        moto_rows = result.fetchall()
-        if moto_rows:
-            moto_objects = [MotoBase.model_validate(moto_object) for moto_object in moto_rows]
-            return {"moto": moto_objects}
+        existing_moto = await session.get(Moto, frame_id)
+        if existing_moto:
+            return {f"{frame_id}": MotoBase.model_validate(existing_moto)}
         raise HTTPException(status_code=404, detail="Moto not found")
     except SQLAlchemyError as db_error:
         await session.rollback()
         raise SQLAlchemyError(f"Database error: {db_error}")
 
 
-@router.post("/add_moto", response_model=MotoWrite)
+@router.post("/add_moto")
 async def add_moto(
         new_moto: MotoWrite,
         session: AsyncSession = Depends(get_async_session)
@@ -122,26 +122,12 @@ async def add_moto(
 @router.patch("/update_moto")
 async def update_moto(
         frame_id: str,
-        moto_update: MotoBase,
+        moto_update: MotoWrite,
         session: AsyncSession = Depends(get_async_session)
 ) -> dict[str, MotoBase]:
     try:
-        query = (
-            select(moto).
-            where(moto.c.frame_id == frame_id)
-        )
-        result = await session.execute(query)
-        existing_moto = result.scalars().first()
-        if not existing_moto:
-            raise HTTPException(status_code=404, detail="Moto not found")
-
-        for key, value in moto_update.model_dump(exclude_unset=True).items():
-            setattr(existing_moto, key, value)
-
-        await session.commit()
-        await session.refresh(existing_moto)
-
-        return {"updated_moto": MotoBase.model_validate(existing_moto)}
+        responses = await update_model(Moto, moto_update, frame_id, session)
+        return responses
     except SQLAlchemyError as db_error:
         await session.rollback()
         raise SQLAlchemyError(f"Database error: {db_error}")
@@ -153,12 +139,8 @@ async def delete_moto(
         session: AsyncSession = Depends(get_async_session)
 ):
     try:
-        stmt = delete(moto).where(moto.c.frame_id == frame_id)
-        result = await session.execute(stmt)
-        await session.commit()
-        if result.rowcount == 0:
-            raise HTTPException(status_code=404, detail="Not Found")
-        return {"status": 200, "msg": "Deleted Successfully"}
+        response = await delete_model(Moto, frame_id, session)
+        return response
     except SQLAlchemyError as db_error:
         await session.rollback()
         raise HTTPException(status_code=500, detail=f"Database error: {db_error}")
