@@ -9,4 +9,7 @@ DB_NAME = os.environ.get("DB_NAME")
 DB_USER = os.environ.get("DB_USER")
 DB_PASS = os.environ.get("DB_PASS")
 
+JWT_SECRET = os.environ.get("JWT_SECRET")
+
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
+

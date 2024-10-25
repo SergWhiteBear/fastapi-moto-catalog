@@ -5,7 +5,7 @@ from fastapi_users import schemas
 from pydantic import UUID4, BaseModel, EmailStr, Field
 
 
-class UserRead(schemas.BaseUser[int]):
+class UserRead(schemas.BaseUser[UUID4]):
     id: UUID4
     email: EmailStr
     username: str
