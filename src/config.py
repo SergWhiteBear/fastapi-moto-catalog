@@ -11,5 +11,8 @@ DB_PASS = os.environ.get("DB_PASS")
 
 JWT_SECRET = os.environ.get("JWT_SECRET")
 
+SMTP_USER = os.environ.get("SMTP_USER")
+SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD")
+
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
