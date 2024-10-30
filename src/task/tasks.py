@@ -3,7 +3,7 @@ import time
 from email.message import EmailMessage
 
 from celery import Celery
-from src.config import SMTP_USER, SMTP_PASSWORD
+from src.config import settings
 
 
 SMTP_HOST = 'smtp.gmail.com'
@@ -17,7 +17,7 @@ celery.conf.broker_connection_retry_on_startup = True
 def get_recovery_password(username):
     email = EmailMessage()
     email['Subject'] = 'Recovery Password'
-    email['From'] = SMTP_USER
+    email['From'] = settings.SMTP_HOST
     email['To'] = username
 
     email.set_content(
@@ -36,5 +36,5 @@ def send_email_recovery_form(username):
     email = get_recovery_password(username)
     with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
         server.starttls()  # Инициируем TLS
-        server.login(SMTP_USER, SMTP_PASSWORD)
+        server.login(settings.SMTP_HOST, settings.SMTP_PASSWORD)
         server.send_message(email)
