@@ -9,9 +9,9 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 from src.config import database_url
-from src.database import Base
-from src.user.models import User
+from src.dao.database import Base
 from src.moto.models import Moto, Engine
+from src.user.models import User, Role
 
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 # this is the Alembic Config object, which provides

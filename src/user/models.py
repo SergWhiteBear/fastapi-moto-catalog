@@ -1,22 +1,23 @@
-import uuid
-from datetime import datetime, timezone
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from sqlalchemy import Column, String, ForeignKey, JSON, Boolean, DateTime
-from sqlalchemy.dialects.postgresql import UUID
-from src.database import Base
+from src.dao.database import Base
 
 
 class Role(Base):
-    name = Column(String, nullable=False, unique=True)
-    permissions = Column(JSON)
+    name: Mapped[str] = mapped_column(unique=True)
+    users: Mapped[list["User"]] = relationship(back_populates="role")
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(id={self.id}, name={self.name})"
 
 class User(Base):
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, nullable=False, unique=True)
-    email = Column(String, nullable=False)
-    username = Column(String, nullable=False, unique=True)
-    registered_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False)
-    role = Column(String, ForeignKey('roles.name'), onupdate="CASCADE")
-    hashed_password = Column(String, nullable=False)
-    is_active: bool = Column(Boolean, default=True, nullable=False)
-    is_superuser: bool = Column(Boolean, default=False, nullable=False)
-    is_verified: bool = Column(Boolean, default=False, nullable=False)
+    email: Mapped[str]
+    username: Mapped[str] = mapped_column(unique=True)
+    hashed_password: Mapped[str]
+    role_id: Mapped[int] = mapped_column(ForeignKey('roles.id'), onupdate="CASCADE")
+    role: Mapped["Role"] = relationship("Role", back_populates="users", lazy="joined")
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(id={self.id})"
+

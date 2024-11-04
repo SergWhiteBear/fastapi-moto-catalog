@@ -4,7 +4,6 @@ from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import CookieTransport, AuthenticationBackend
 from fastapi_users.authentication import JWTStrategy
 
-from src.user.manager import get_user_manager
 from src.user.models import User
 
 from src.config import settings
@@ -23,9 +22,4 @@ auth_backend = AuthenticationBackend(
     get_strategy=get_jwt_strategy,
 )
 
-fastapi_users = FastAPIUsers[User, uuid.UUID](
-    get_user_manager,
-    [auth_backend],
-)
 
-current_user = fastapi_users.current_user()

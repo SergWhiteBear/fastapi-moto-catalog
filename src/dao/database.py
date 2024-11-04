@@ -1,35 +1,22 @@
-from contextlib import asynccontextmanager
+import random
+import string
 from datetime import datetime
-from typing import AsyncGenerator, Dict, Any
-
-from loguru import logger
+from typing import Dict, Any, Annotated
 from sqlalchemy import TIMESTAMP, func, Integer
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker, AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
 from src.config import database_url
 
-engine = create_async_engine(url=database_url, connect_args={"command_timeout": 10}, pool_size=10, max_overflow=20)
-async_session_maker = async_sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-)
 
-@asynccontextmanager
-async def managed_session() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session_maker() as session:
-        try:
-            yield session
-            await session.commit()
-        except Exception as e:
-            await session.rollback()
-            logger.exception(f"Database session error: {str(e)}")
-            raise
-        finally:
-            await session.close()
+engine = create_async_engine(url=database_url)
+async_session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
-async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session_maker() as session:
-        yield session
+
+def generate_moto_id():
+    characters = string.ascii_uppercase.replace('I', '').replace('O', '').replace('Q', '') + string.digits
+    return ''.join(random.choices(characters, k=17))
+
+uniq_str_for_moto = Annotated[str, mapped_column(unique=True, default=generate_moto_id)]
 
 class Base(AsyncAttrs, DeclarativeBase):
     __abstract__ = True
