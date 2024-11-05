@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from sqlalchemy import select, update as sqlalchemy_update, delete as sqlalchemy_delete
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from src.dao.database import Base
 
 T = TypeVar("T", bound=Base)
@@ -15,7 +14,7 @@ class BaseDAO(Generic[T]):
     @classmethod
     async def get_all(cls, session: AsyncSession, filters: BaseModel | None):
         if filters:
-            filter_dict = filters.model_dump(exclude_unset=True)
+            filter_dict = filters.model_dump(exclude_unset=True, exclude_none=True)
         else:
             filter_dict = {}
         try:
@@ -75,7 +74,7 @@ class BaseDAO(Generic[T]):
 
     @classmethod
     async def update(cls, session: AsyncSession, filters: BaseModel, values: BaseModel):
-        filter_dict = filters.model_dump(exclude_unset=True)
+        filter_dict = filters.model_dump(exclude_unset=True, exclude_none=True)
         values_dict = values.model_dump(exclude_unset=True)
         query = (
             sqlalchemy_update(cls.model)
@@ -86,14 +85,14 @@ class BaseDAO(Generic[T]):
         try:
             result = await session.execute(query)
             await session.flush()
-            return result.rowcount()
+            return result.rowcount
         except SQLAlchemyError as e:
             await session.rollback()
             raise e
 
     @classmethod
     async def delete(cls, session: AsyncSession, filters: BaseModel):
-        filter_dict = filters.model_dump(exclude_unset=True)
+        filter_dict = filters.model_dump(exclude_unset=True, exclude_none=True)
         if not filter_dict:
             raise ValueError("Need filters")
         query = sqlalchemy_delete(cls.model).filter_by(**filter_dict)
