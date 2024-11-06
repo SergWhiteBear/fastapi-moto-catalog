@@ -7,7 +7,6 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sess
 from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
 from src.config import database_url
 
-
 engine = create_async_engine(url=database_url)
 async_session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
@@ -16,7 +15,10 @@ def generate_moto_id():
     characters = string.ascii_uppercase.replace('I', '').replace('O', '').replace('Q', '') + string.digits
     return ''.join(random.choices(characters, k=17))
 
+
 uniq_str_for_moto = Annotated[str, mapped_column(unique=True, default=generate_moto_id)]
+uniq_str = Annotated[str, mapped_column(unique=True)]
+
 
 class Base(AsyncAttrs, DeclarativeBase):
     __abstract__ = True

@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.dao.session_maker import TransactionSessionDep, SessionDep
 from src.moto.dao import EngineDAO, MotoDAO
 from src.moto.schemas import SEngineWrite, SEngineRead, EngineModel, SMotoRead, MotoModel, SMotoWrite, \
-    SEngineUpdate, SMotoUpdate, SMotoFilter
+    SEngineUpdate, SEngineFilter, SMotoUpdate, SMotoFilter
 from fastapi import APIRouter, FastAPI, HTTPException, status, Depends
 
 
@@ -67,7 +67,7 @@ async def delete_engine(filters: SEngineUpdate = Depends(), session: AsyncSessio
     return deleted_rows
 
 @router.get("/get_all_engine/")
-async def get_all_engine(filters: SEngineUpdate = Depends(), session: AsyncSession = SessionDep):
+async def get_all_engine(filters: SEngineFilter = Depends(), session: AsyncSession = SessionDep):
     all_rows = await EngineDAO.get_all(session, filters=filters)
     if not all_rows:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
