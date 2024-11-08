@@ -11,8 +11,7 @@ class EmailModel(BaseModel):
 
 class UserBase(EmailModel):
     phone_number: str = Field(description="Номер телефона в международном формате, начинающийся с '+'")
-    first_name: str = Field(min_length=3, max_length=50, description="Имя, от 3 до 50 символов")
-    last_name: str = Field(min_length=3, max_length=50, description="Фамилия, от 3 до 50 символов")
+    username: str = Field(description="Имя пользователя", min_length=5, max_length=50)
 
     @field_validator("phone_number")
     def validate_phone_number(cls, value: str) -> str:
@@ -33,7 +32,7 @@ class SUserRegister(UserBase):
         return self
 
 
-class SUserAddDB(UserBase):
+class SUserWrite(UserBase):
     password: str = Field(min_length=5, description="Пароль в формате HASH-строки")
 
 
@@ -47,7 +46,7 @@ class RoleModel(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class SUserInfo(UserBase):
+class SUserRead(UserBase):
     id: int = Field(description="Идентификатор пользователя")
     role: RoleModel = Field(exclude=True)
 
