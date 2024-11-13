@@ -6,13 +6,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: hidden; /* Убираем скроллинг при открытом модальном окне */
 }
 
 /* Стили для заголовка */
 #header {
     width: 100%;
-    padding: 20px;
     background-color: #ffffff;
     display: flex;
     justify-content: space-between;
@@ -38,8 +36,10 @@ body {
     box-shadow: 10px 5px 5px rgba(154, 154, 154, 0.6);
 }
 
+.logout-icon,
 .profile-icon{
     display: none;
+    margin: 5px;
 }
 
 .login-icon {
@@ -180,6 +180,105 @@ button {
 .link-container-register a:hover,
 .link-container a:hover {
     text-decoration: underline;
+}
+
+
+/* Для карточек мото*/
+/* Общие стили для контента */
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+/* Стили для карточек мотоциклов */
+.motorcycle-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.motorcycle-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Стили для изображения */
+.motorcycle-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Стили для информации о мотоцикле */
+.motorcycle-info {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.motorcycle-info h2 {
+    font-size: 1.5em;
+    margin: 0 0 10px 0;
+}
+
+.motorcycle-info p {
+    margin: 5px 0;
+    flex-grow: 1;
+}
+
+/* Кнопка или дополнительные элементы, если нужны */
+.motorcycle-info .details-button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+.motorcycle-info .details-button:hover {
+    background-color: #0056b3;
+}
+
+/* Медиа-запросы для адаптивности */
+
+/* Большие экраны (десктопы) */
+@media (min-width: 1200px) {
+    .content {
+        justify-content: flex-start;
+    }
+    .motorcycle-card {
+        max-width: 300px;
+    }
+}
+
+/* Средние экраны (планшеты) */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .motorcycle-card {
+        max-width: 45%;
+    }
+}
+
+/* Маленькие экраны (мобильные устройства) */
+@media (max-width: 767px) {
+    .motorcycle-card {
+        max-width: 100%;
+    }
 }
 
 
