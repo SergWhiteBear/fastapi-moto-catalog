@@ -2,28 +2,15 @@
 
 {% block title %}Профиль{% endblock %}
 
-{% block style_page %}
-<link rel="stylesheet" href="{{ url_for('static', path='profile.css') }}">
-{% endblock %}
+{% block content %}
+<header id="header">
+    <h1>Профиль пользователя</h1>
+</header>
 
-{% block content%}
-<div class="profile-container">
-    <h1>Профиль</h1>
-
-    <div class="profile-info">
-        <img src="https://via.placeholder.com/150" alt="Аватар" class="profile-avatar">
-        <div class="profile-name">Иван Иванов</div>
-        <div class="profile-details">Email: ivan@example.com</div>
-    </div>
-
-    <div class="profile-actions">
-        <button>Редактировать профиль</button>
-        <button>Выйти</button>
-    </div>
-
-    <div class="profile-section">
-        <h2>Обо мне</h2>
-        <p>Здесь вы можете указать дополнительную информацию о себе.</p>
-    </div>
+<div id="profile-content">
+    <!-- Здесь будет отображаться информация о профиле -->
+<script src="/js/profile.js"></script>
 </div>
+
+
 {% endblock %}

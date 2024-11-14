@@ -30,9 +30,43 @@ async function switchForm(formId) {
     }
 }
 
-// Функция открытия страницы профиля
-function openProfile() {
-    window.open('/auth/me/');
+async function showProfileButton() {
+    const profileIcon = document.getElementById('profile-icon');
+    const logoutIcon = document.getElementById('logout-icon');
+    const loginIcon = document.getElementById('login-icon');
+    profileIcon.style.display = 'inline-block'; // Показываем кнопку
+    logoutIcon.style.display = 'inline-block';
+    loginIcon.style.display = 'none'
+}
+
+async function hideProfileButton() {
+    const profileIcon = document.getElementById('profile-icon');
+    const logoutIcon = document.getElementById('logout-icon');
+    const loginIcon = document.getElementById('login-icon');
+    profileIcon.style.display = 'none'; // Скрываем кнопку
+    logoutIcon.style.display = 'none';
+    loginIcon.style.display = 'inline-block';
+
+}
+
+
+
+async function checkStatus() {
+    try {
+        const response = await fetch('/auth/me/', {
+            method: 'GET',
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            await showProfileButton()
+        } else {
+            await hideProfileButton
+        }
+    } catch (error) {
+        console.error('Ошибка при проверке авторизации:', error);
+        await hideProfileButton();
+    }
 }
 
 function displayErrors(errorData) {
@@ -84,12 +118,8 @@ async function loginFunction(event) {
         const result = await response.json();
 
         if (result.message) {
-            const loginIcon = document.getElementById("login-icon");
-            const profileIcon = document.getElementById("profile-icon");
-            loginIcon.style.display = "none";
-            profileIcon.style.display = "block";
+            await checkStatus()
             await closeModal()
-            //window.location.href = '/auth/me';
         } else {
             alert(result.message || 'Неизвестная ошибка')
         }
@@ -138,3 +168,19 @@ async function registerFunction(event) {
 async function recoveryFunction(event) {
     return;
 }
+
+async function logout() {
+    try {
+        await fetch('/auth/logout/', {
+            method: 'POST',
+            credentials: 'include'
+        })
+        await hideProfileButton()
+    } catch (error) {
+        console.error('Ошибка при выходе из системы:', error);
+    }
+}
+
+document.getElementById('logout-icon').addEventListener('click', async function () {
+    await logout()
+})

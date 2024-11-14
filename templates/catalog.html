@@ -11,10 +11,15 @@
     <h1>ПРО_МОТО</h1>
     <div class="header-buttons">
         <button id="login-icon" class="login-icon" onclick="openModal()">Вход</button>
-        <button id="profile-icon" class="profile-icon" onclick="openProfile()">Профиль</button>
+        <button id="profile-icon" class="profile-icon">Профиль</button>
+        <button id="logout-icon" class="logout-icon">Выйти</button>
     </div>
     <script src="js/header.js"></script>
 </header>
+
+<div id="content" class="content">
+    <script src="/js/script.js"></script>
+</div>
 
 <div id="modal" class="modal">
     <div class="modal-content">
@@ -39,13 +44,16 @@
             <input type="tel" id="phone_num" name="phone_num" placeholder="Номер телефона" required>
             <input type="email" id="email" name="email" placeholder="Почта" required>
             <input type="password" id="password" name="password" placeholder="Пароль" required>
-            <input type="password" id="confirm_password" name="confirm_password" placeholder="Подтверждение пароля" required>
-            <button type="submit" id="register-button" class="submit-button" onclick="registerFunction(event)">Зарегистрироваться</button>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Подтверждение пароля"
+                   required>
+            <button type="submit" id="register-button" class="submit-button" onclick="registerFunction(event)">
+                Зарегистрироваться
+            </button>
             <div class="link-container-register">
                 <p><a href="#" onclick="switchForm('login-form')">Войти</a></p>
             </div>
         </form>
-
+        <!-- Форма Восстановления -->
         <form id="recovery-form" class="form-container">
             <h2>Восстановление пароля</h2>
             <input type="email" placeholder="Почта" required>
@@ -56,5 +64,5 @@
         </form>
     </div>
 </div>
-<script src="/js/header.js"></script>
+<script src="/js/script.js"></script>
 {% endblock %}
