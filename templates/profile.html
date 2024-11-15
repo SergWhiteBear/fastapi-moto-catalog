@@ -2,15 +2,89 @@
 
 {% block title %}Профиль{% endblock %}
 
+{% block style_page%}
+<link rel="stylesheet" href="{{ url_for('static', path='profile.css') }}">
+{%endblock%}
+
 {% block content %}
 <header id="header">
-    <h1>Профиль пользователя</h1>
+    <h1>Профиль</h1>
 </header>
+<div class="profile-container" id="profile-content">
+    <!-- Контейнер для кнопок и информации -->
+    <div class="left-column">
+        <!-- Контейнер для кнопок -->
+        <div class="buttons-container">
 
-<div id="profile-content">
-    <!-- Здесь будет отображаться информация о профиле -->
-<script src="/js/profile.js"></script>
+            <button id="profile-user-button">Профиль</button>
+            <button id="order-info-button">Заказы</button>
+            <button id="bucket-button">Корзина</button>
+            <button id="logout-button">Выйти</button>
+        </div>
+    </div>
+
+    <div class="right-column">
+
+        <!-- Информация о пользователе -->
+        <div id="userInfo" class="profile-info section">
+            <div id="profile-name" class="profile-name">Мои данные</div>
+            <img src="/static/icons/moto_icon.png" alt="Аватар" class="profile-avatar">
+            <label for="name">Имя</label>
+            <input type="text" id="name" name="name" placeholder="Имя" required>
+            <label for="last_name">Фамилия</label>
+            <input type="text" id="last_name" name="last_name" placeholder="Фамилия" required>
+            <label for="patronymic">Отчество</label>
+            <input type="text" id="patronymic" name="patronymic" placeholder="Отчество" required>
+            <!-- Строка для email -->
+            <div class="profile-field">
+                <span id="profile-email" class="profile-email"></span>
+                <button id="change-email-icon" class="change-icon" onclick="changeEmail()">✎</button>
+            </div>
+
+            <!-- Строка для телефона -->
+            <div class="profile-field">
+                <span id="profile-phone" class="profile-phone"></span>
+                <button id="change-phone-icon" class="change-icon" onclick="changePhone()">✎</button>
+            </div>
+            <button id="update-profile-button">Сохранить</button>
+        </div>
+
+        <!-- Блок заказов -->
+        <div class="profile-orders section" id="profile-orders">
+            <button class="slider-button prev" onclick="slideOrders(-1)">&#10094;</button>
+            <div class="orders-slider" id="orders-slider">
+                <div class="order-item">
+                    <img src="/static/icons/мото1.png" alt="Мотоцикл X" class="order-image">
+                    <div class="order-info">
+                        <h3>Мотоцикл X</h3>
+                        <p>Дата заказа: 12.08.2023</p>
+                        <p>Статус: Доставлен</p>
+                    </div>
+                </div>
+                <div class="order-item">
+                    <img src="/static/icons/мото2.png" alt="Мотоцикл Y" class="order-image">
+                    <div class="order-info">
+                        <h3>Мотоцикл Y</h3>
+                        <p>Дата заказа: 20.09.2023</p>
+                        <p>Статус: В пути</p>
+                    </div>
+                </div>
+                <div class="order-item">
+                    <img src="/static/icons/мото3.png" alt="Мотоцикл Z" class="order-image">
+                    <div class="order-info">
+                        <h3>Мотоцикл Z</h3>
+                        <p>Дата заказа: 25.10.2023</p>
+                        <p>Статус: Обрабатывается</p>
+                    </div>
+                </div>
+            </div>
+            <button class="slider-button next" onclick="slideOrders(1)">&#10095;</button>
+        </div>
+
+    </div>
 </div>
+
+<script src="/js/profile.js"></script>
 
 
 {% endblock %}
