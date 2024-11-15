@@ -181,6 +181,10 @@ async function logout() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', async () => {
+   await checkStatus()
+});
+
 document.getElementById('logout-icon').addEventListener('click', async function () {
     await logout()
 })
