@@ -1,12 +1,26 @@
+function showLoading() {
+    document.getElementById("loading").style.display = "block";
+}
+
+// Функция для скрытия иконки загрузки
+function hideLoading() {
+    document.getElementById("loading").style.display = "none";
+}
+
+
 async function loadMotorcycles() {
+    showLoading()
     try {
+
         const response = await fetch('/moto/get_all_moto/'); // Укажите ваш URL API
         if (!response.ok) {
             throw new Error('Ошибка при получении данных');
         }
         const motorcycles = await response.json();
         await renderMotorcycles(motorcycles);
+        hideLoading()
     } catch (error) {
+        hideLoading()
         console.error('Ошибка:', error);
         document.getElementById('content').innerHTML = '<p>Не удалось загрузить данные</p>';
     }

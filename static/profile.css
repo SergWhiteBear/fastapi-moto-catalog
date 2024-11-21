@@ -12,8 +12,8 @@ body {
     display: flex;
     justify-content: flex-start;
     padding: 20px;
-    max-width: 800px;
-    margin: 30px auto;
+    max-width: 750px;
+    margin: 20px;
     background-color: #ffffff;
 }
 
@@ -22,7 +22,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    border-right: 1px solid #ccc;
     padding-right: 20px;
     flex-shrink: 2;
 }
@@ -31,14 +30,13 @@ body {
 .buttons-container button {
     background: none;
     border: none;
-    padding: 10px 0;
     color: black;
     font-size: 1em;
     cursor: pointer;
     text-align: left;
     width: 100%;
-    border-bottom: 1px solid #ddd;
     transition: color 0.3s ease;
+    padding: 10px 0 10px 5px;
 }
 
 .buttons-container button:last-child {
@@ -47,6 +45,7 @@ body {
 
 .buttons-container button:hover {
     color: #888888;
+    transform: scale(0.98);
 }
 
 /* Правый контейнер для информации о пользователе */
@@ -55,7 +54,7 @@ body {
     text-align: left;
     padding-left: 20px;
     flex-shrink: 0;
-    min-width: 300px;
+    min-width: 200px;
 }
 
 /* Контейнер для аватара */
@@ -87,7 +86,7 @@ body {
 /* Поля ввода информации */
 .profile-info {
     width: 100%;
-    max-width: 400px;
+    max-width: 100%;
 }
 
 /* Стили для подписей (label) */
@@ -149,95 +148,68 @@ input[type="text"]::placeholder, input[type="email"]::placeholder, input[type="t
 
 /* Кнопка "Сохранить" с заливкой */
 #update-profile-button {
+    background-color: #000000;
+    border: 1px solid #000000;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
     display: block;
     margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 1em;
     color: white;
-    background-color: black;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    border-radius: 4px;
     transition: background-color 0.3s ease;
 }
 
 #update-profile-button:hover {
-    background-color: #444;
+    color: #000000;
+    box-shadow: 10px 5px 5px rgba(154, 154, 154, 0.6);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Контейнер слайдера */
 .profile-orders {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    margin: auto;
-    overflow: hidden;
-}
-
-.orders-slider {
     display: flex;
-    gap: 10px;
-    transition: transform 0.3s ease-in-out;
-    touch-action: pan-x;
+
 }
 
 .order-item {
     display: flex;
-    flex-direction: row; /* Изменено на горизонтальное расположение */
+    flex-direction: row; /* Текст справа от изображения на ПК */
     align-items: center;
-    justify-content: flex-start;
-    text-align: left; /* Текст будет выровнен влево */
-    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06); /* Легкая тень */
+    flex: 1 1 calc(33.333% - 20px); /* Три карточки в строке на ПК */
     box-sizing: border-box;
-    flex: 0 0 100%;
-    max-width: 100%;
+    padding: 15px;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 
+.order-item:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1); /* Усиленная тень при наведении */
+}
+
+/* Изображение мотоцикла */
 .order-image {
-    width: 100%;
+    width: 150px; /* Ограничение ширины изображения */
     height: auto;
-    max-height: 200px;
+    margin-right: 15px; /* Отступ между изображением и текстом */
     object-fit: contain;
 }
 
+/* Текстовая информация о заказе */
 .order-info {
-    width: 50%; /* Ширина текстового блока */
-    padding-left: 20px; /* Отступ слева для отделения текста от изображения */
+    flex: 1; /* Заполнение оставшегося пространства текстом */
+    text-align: left;
 }
 
-.slider-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.2);
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 10;
-    padding: 5px;
+.order-info h3 {
+    margin: 0;
+    font-size: 18px;
 }
 
-.slider-button:hover{
-    background-color: rgba(0, 0, 0, 0.2);
-}
-
-.slider-button.prev {
-    left: 5px
-}
-
-.slider-button.next {
-    right: 5px;
-}
-
-/* Хедер */
-#header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-#header h1 {
-    font-size: 2em;
-    color: #333;
+.order-info p {
+    margin: 5px 0;
+    color: #555;
 }
 
 /* Скрытие секций */
@@ -249,22 +221,18 @@ input[type="text"]::placeholder, input[type="email"]::placeholder, input[type="t
     display: block;
 }
 
-
 @media (max-width: 768px) {
     .order-item {
-        flex-direction: column; /* Изображение и текст становятся вертикальными */
-        align-items: center;
+        flex-direction: column; /* Текст под изображением */
+        align-items: center; /* Выравнивание по центру */
+        text-align: center; /* Центрирование текста */
     }
 
     .order-image {
-        width: 100%; /* Изображение занимает всю ширину контейнера */
-        max-height: 200px; /* Ограничиваем максимальную высоту */
-        margin-bottom: 10px; /* Отступ снизу для разделения с текстом */
+        margin-bottom: 10px; /* Отступ снизу изображения */
     }
 
     .order-info {
-        width: 100%; /* Текстовый блок растягивается на всю ширину */
-        text-align: center; /* Центрируем текст для аккуратного вида */
-        padding: 0;
+        text-align: center; /* Центрирование текста */
     }
 }

@@ -34,18 +34,22 @@ async function showProfileButton() {
     const profileIcon = document.getElementById('profile-icon');
     const logoutIcon = document.getElementById('logout-icon');
     const loginIcon = document.getElementById('login-icon');
-    profileIcon.style.display = 'inline-block'; // Показываем кнопку
-    logoutIcon.style.display = 'inline-block';
-    loginIcon.style.display = 'none'
+    const bucketIcon = document.getElementById('bucket-button')
+    if (profileIcon) profileIcon.style.display = 'inline-block';
+    if (logoutIcon) logoutIcon.style.display = 'inline-block';
+    if (bucketIcon) bucketIcon.style.display = 'inline-block';
+    if (loginIcon) loginIcon.style.display = 'none';
 }
 
 async function hideProfileButton() {
     const profileIcon = document.getElementById('profile-icon');
     const logoutIcon = document.getElementById('logout-icon');
     const loginIcon = document.getElementById('login-icon');
-    profileIcon.style.display = 'none'; // Скрываем кнопку
-    logoutIcon.style.display = 'none';
-    loginIcon.style.display = 'inline-block';
+    const bucketIcon = document.getElementById('bucket-button')
+    if (profileIcon) profileIcon.style.display = 'none';
+    if (logoutIcon) logoutIcon.style.display = 'none';
+    if (bucketIcon) bucketIcon.style.display = 'none';
+    if (loginIcon) loginIcon.style.display = 'inline-block';
 
 }
 
@@ -61,7 +65,7 @@ async function checkStatus() {
         if (response.ok) {
             await showProfileButton()
         } else {
-            await hideProfileButton
+            await hideProfileButton()
         }
     } catch (error) {
         console.error('Ошибка при проверке авторизации:', error);
@@ -175,6 +179,7 @@ async function logout() {
             method: 'POST',
             credentials: 'include'
         })
+        location.replace('/')
         await hideProfileButton()
     } catch (error) {
         console.error('Ошибка при выходе из системы:', error);
@@ -182,9 +187,14 @@ async function logout() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-   await checkStatus()
+   try {
+        await checkStatus(); // Проверяем статус авторизации при загрузке страницы
+    } catch (error) {
+        console.error('Ошибка при проверке статуса авторизации:', error);
+    }
 });
 
-document.getElementById('logout-icon').addEventListener('click', async function () {
+document.getElementById('logout-icon').addEventListener('click', async () => {
     await logout()
 })
+
