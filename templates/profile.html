@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block header %}
-    {% include 'profile-header.html' %}
+{% include 'profile-header.html' %}
 {% endblock %}
 
 {% block content %}
@@ -21,6 +21,9 @@
         <div class="buttons-container">
             <button id="profile-user-button">Профиль</button>
             <button id="order-info-button">Заказы</button>
+            <button id="shopping-cart-button">Корзина</button>
+            <button id="support-button">Помощь</button>
+
         </div>
     </div>
 
@@ -50,7 +53,7 @@
 
         <!-- Блок заказов -->
         <div class="profile-orders section" id="profile-orders" style="display: none;">
-        <div id="profile-name" class="profile-name">Мои заказы</div><!-- Поменять на profile title или типо -->
+            <div id="profile-name" class="profile-name">Мои заказы</div><!-- Поменять на profile title или типо -->
             <div id="orders-loading" class="loading">Загрузка...</div> <!-- Загрузочный индикатор для заказов -->
             <div id="orders-content" class="orders-content" style="display: none;">
                 <!-- Сюда будут вставляться заказы -->

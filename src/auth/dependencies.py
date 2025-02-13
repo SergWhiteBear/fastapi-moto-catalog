@@ -4,19 +4,21 @@ from datetime import datetime, timezone
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import settings
 from src.exceptions import TokenExpiredException, NoJwtException, NoUserIdException, ForbiddenException, TokenNoFound
-from src.auth.dao import UsersDAO
-from src.auth.models import User
+from src.user.dao import UsersDAO
+from src.user.models import User
 from src.dao.session_maker import SessionDep
 
 
 def get_token(request: Request):
     token = request.cookies.get('users_access_token')
     if not token:
-        raise TokenNoFound
+        return None
     return token
 
-
 async def get_current_user(token: str = Depends(get_token), session: AsyncSession = SessionDep):
+    if not token:
+        return None
+
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=settings.ALGORITHM)
     except JWTError:

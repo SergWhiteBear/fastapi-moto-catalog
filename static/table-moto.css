@@ -1,0 +1,173 @@
+/* Основной контейнер таблицы */
+.table-container {
+    margin: 15px 50px 10px;
+    font-family: Ubuntu, sans-serif;
+}
+
+/* Заголовок таблицы */
+.table-header {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    background-color: #f5f5f5;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+}
+
+.header-item {
+    padding: 12px;
+}
+
+/* Ряд таблицы */
+.table-row {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s;
+}
+
+.column-name {
+    display: none;
+    font-weight: bold;
+    color: #555;
+    margin-right: 10px;
+}
+
+.table-row:hover {
+    background-color: #f9f9f9;
+}
+
+/* Элемент внутри строки */
+.item-title,
+.row-item {
+    padding: 5px; /* Увеличим padding */
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.row-link {
+    display: contents;
+    text-decoration: none;
+    color: inherit;
+}
+
+.image img {
+    aspect-ratio: 4/3;
+    width: 100%;
+    object-fit: contain;
+}
+
+a.row-link, a.table-row {
+    text-decoration: none; /* Убирает подчеркивание */
+    color: inherit; /* Цвет наследуется от родителя */
+}
+
+/* Для hover эффектов (по желанию) */
+a.row-link:hover, a.table-row:hover {
+    text-decoration: none; /* Убираем подчеркивание при наведении */
+    color: inherit; /* Оставляем цвет неизменным */
+}
+
+/* Для мобильных и планшетов: карточный вид */
+@media (max-width: 1024px) {
+    /* Скрываем заголовок */
+    .table-header {
+        display: none;
+    }
+    .table-container{
+        margin: 5px 10px 5px;
+    }
+
+    /* Контейнер карточек: сетка */
+    #table-body {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 15px;
+
+    }
+
+    /* Каждая строка становится карточкой */
+    .table-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+        background-color: #fff;
+        overflow-wrap: break-word;
+    }
+
+    .row-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+        width: 100%;
+    }
+
+    .row-item:last-child {
+        border-bottom: none;
+    }
+
+    .item-title {
+        display: flex;
+        padding: 5px 0 10px;
+    }
+
+    .moto-name {
+        font-size: 20px;
+        font-weight: bold;
+        color: #555;
+        text-align: left;
+    }
+
+    .column-name {
+        font-weight: bold;
+        color: #555;
+        margin-right: 10px;
+        flex-shrink: 1; /* Не даём сжиматься */
+        text-align: left;
+        min-width: 100px; /* Минимальная ширина */
+        overflow-wrap: break-word; /* Современный способ переноса */
+        display: block;
+    }
+
+    .row-value {
+        flex-grow: 1; /* Занимает оставшееся место */
+        margin-left: 10px;
+        text-align: right;
+        overflow-wrap: break-word;
+    }
+
+    .image img {
+        aspect-ratio: 4/3;
+        width: 100%;
+        border-bottom: none;
+        border-radius: 6px;
+        object-fit: cover;
+    }
+}
+
+/* Адаптивность для очень маленьких экранов */
+@media (max-width: 720px) {
+
+    .image img {
+        aspect-ratio: 4/3;
+        width: 100%;
+        border-bottom: none;
+        border-radius: 6px;
+        object-fit: cover;
+    }
+
+}
+
+@media (max-width: 350px) {
+    .table-container{
+        margin: auto;
+    }
+}

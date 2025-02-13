@@ -1,12 +1,11 @@
-from email.policy import default
-from typing import List
 from fastapi import APIRouter, Response, Depends
+
 from src.auth.dependencies import get_current_user, get_current_admin_user
-from src.auth.models import User
+from src.user.models import User
 from src.exceptions import UserAlreadyExistsException, IncorrectEmailOrPasswordException
 from src.auth.auth import authenticate_user, create_access_token
-from src.auth.dao import UsersDAO
-from src.auth.schemas import SUserRegister, SUserAuth, EmailModel, SUserWrite, SUserRead
+from src.user.dao import UsersDAO
+from src.user.schemas import SUserRegister, SUserAuth, EmailModel, SUserWrite, SUserRead
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.dao.session_maker import TransactionSessionDep, SessionDep
@@ -48,5 +47,5 @@ async def get_me(user_data: User = Depends(get_current_user)) -> SUserRead:
 
 @router.get("/all_users/")
 async def get_all_users(session: AsyncSession = SessionDep,
-                        user_data: User = Depends(get_current_admin_user)) -> List[SUserRead]:
+                        user_data: User = Depends(get_current_admin_user)) -> list[SUserRead]:
     return await UsersDAO.get_all(session=session, filters=None)

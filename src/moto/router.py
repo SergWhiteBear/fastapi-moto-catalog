@@ -41,6 +41,7 @@ async def add_engine(engine_data: SEngineWrite, session: AsyncSession = Transact
     return engine
 
 
+# Убрать или оставить только для админа
 @router.get("/get_engine/", response_model=SEngineRead)
 async def get_engine(engine_num, session: AsyncSession = SessionDep):
     engine = await EngineDAO.find_one_or_none(session=session, filters=EngineModel(engine_num=engine_num))
@@ -66,12 +67,14 @@ async def delete_engine(filters: SEngineUpdate = Depends(), session: AsyncSessio
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Не удалось найти записей для удаления")
     return deleted_rows
 
+
 @router.get("/get_all_engine/")
 async def get_all_engine(filters: SEngineUpdate = Depends(), session: AsyncSession = SessionDep):
     all_rows = await EngineDAO.get_all(session, filters=filters)
     if not all_rows:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return all_rows
+
 
 @router.get("/get_engine/{id}")
 async def get_engine_by_id(id: int, session: AsyncSession = SessionDep):
@@ -80,7 +83,8 @@ async def get_engine_by_id(id: int, session: AsyncSession = SessionDep):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return engine
 
-@router.post("/add_moto/", response_model=SMotoRead)
+
+@router.post("/add_moto/", response_model=SMotoWrite)
 async def add_moto(moto_data: SMotoWrite, session: AsyncSession = TransactionSessionDep):
     moto = await MotoDAO.find_one_or_none(session=session, filters=MotoModel(frame_num=moto_data.frame_num))
     if moto:
@@ -97,11 +101,13 @@ async def get_moto(frame_num, session: AsyncSession = SessionDep):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return moto
 
+
+# TODO: пофиксить двойной image_url
 @router.patch("/update_moto/")
 async def update_moto(update_data: SMotoUpdate, filters: SMotoUpdate = Depends(),
-                        session: AsyncSession = TransactionSessionDep):
+                      session: AsyncSession = TransactionSessionDep):
     updated_rows = await MotoDAO.update(session, filters=filters,
-                                          values=update_data)
+                                        values=update_data)
     if updated_rows == 0:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Записей для обновления не было найдено")
     return updated_rows
@@ -114,12 +120,14 @@ async def delete_moto(filters: SMotoUpdate = Depends(), session: AsyncSession = 
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Не удалось найти записей для удаления")
     return deleted_rows
 
+
 @router.get("/get_all_moto/")
 async def get_all_moto(filters: SMotoFilter = Depends(), session: AsyncSession = SessionDep):
     all_rows = await MotoDAO.get_all(session, filters=filters)
     if not all_rows:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return all_rows
+
 
 @router.get("/get_moto/{id}")
 async def get_moto_by_id(id: int, session: AsyncSession = SessionDep):

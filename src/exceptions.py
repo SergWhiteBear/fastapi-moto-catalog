@@ -19,3 +19,5 @@ NoUserIdException = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                   detail='Не найден ID пользователя')
 
 ForbiddenException = HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Недостаточно прав!')
+
+ItemAlreadyExistsException = HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Элемент уже добавлен в корзину')

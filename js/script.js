@@ -30,30 +30,53 @@ async function loadMotorcycles() {
 
 // Функция для рендеринга данных
 async function renderMotorcycles(motorcycles) {
-    const content = document.getElementById('content');
-    content.innerHTML = ''; // Очистить содержимое перед добавлением новых данных
-    motorcycles.forEach(motorcycle => {
-        const motorcycleCard = document.createElement('div');
-        motorcycleCard.className = 'motorcycle-card';
+    const tableBody = document.getElementById('table-body');
 
-        motorcycleCard.innerHTML = `
-            <div class="motorcycle-image">
+    // Очистка таблицы
+    tableBody.innerHTML = '';
+
+    motorcycles.forEach(motorcycle => {
+
+        // Создание строки
+        const tableRow = document.createElement('a');
+        tableRow.className = 'table-row';
+
+        // Создание ссылки с передачей минимальных данных через URL
+        tableRow.href = `/moto/details/${motorcycle.id}`;
+        // Внутри ссылки создаём HTML для содержимого строки
+        tableRow.innerHTML = `
+            <div class="image">
                 <img src="${motorcycle.image_url[0]}" alt="${motorcycle.name}">
             </div>
-            <div class="motorcycle-info">
-                <h2>${motorcycle.name}</h2>
-                <p>Класс: ${motorcycle.moto_class}</p>
-                <p>Цена: ${motorcycle.price.toLocaleString('ru-RU')} ₽</p>
-                <p>Номер рамы: ${motorcycle.frame_num}</p>
-                <p>Номер двигателя: ${motorcycle.engine_num}</p>
-                <p>Комментарий: ${motorcycle.comments || 'Нет комментариев'}</p>
-                <p>Дата обновления: ${new Date(motorcycle.updated_at).toLocaleDateString('ru-RU')}</p>
+            <div class="item-title">
+                <span class="moto-name">${motorcycle.name}</span>
+            </div>
+            <div class="row-item">
+                <span class="column-name">Класс:</span>
+                <span class="row-value">${motorcycle.moto_class}</span>
+            </div>
+            <div class="row-item">
+                <span class="column-name">Год, объем:</span>
+                <span class="row-value"></span>
+            </div>
+            <div class="row-item">
+                <span class="column-name">Пробег:</span>
+                <span class="row-value"></span>
+            </div>
+            <div class="row-item">
+                <span class="column-name">Состояние:</span>
+                <span class="row-value">
+            </div>
+            <div class="row-item">
+                <span class="column-name">Цена:</span>
+                <span class="row-value">${motorcycle.price} ₽</span>
             </div>
         `;
-        content.appendChild(motorcycleCard)
+
+        // Добавляем строку в тело таблицы
+        tableBody.appendChild(tableRow);
     });
 }
-
 
 
 // Запуск загрузки данных при загрузке страницы

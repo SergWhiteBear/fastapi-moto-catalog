@@ -54,7 +54,6 @@ async function hideProfileButton() {
 }
 
 
-
 async function checkStatus() {
     try {
         const response = await fetch('/auth/me/', {
@@ -179,7 +178,9 @@ async function logout() {
             method: 'POST',
             credentials: 'include'
         })
-        location.replace('/')
+        if (window.location.pathname !== '/') {
+            location.replace('/')
+        }
         await hideProfileButton()
     } catch (error) {
         console.error('Ошибка при выходе из системы:', error);
@@ -187,7 +188,7 @@ async function logout() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-   try {
+    try {
         await checkStatus(); // Проверяем статус авторизации при загрузке страницы
     } catch (error) {
         console.error('Ошибка при проверке статуса авторизации:', error);

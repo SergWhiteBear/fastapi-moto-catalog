@@ -1,0 +1,44 @@
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+
+        <!-- Форма Входа -->
+        <form id="login-form" class="form-container active">
+            <h2>Вход</h2>
+            <input type="email" id="email" name="email" required>
+            <input type="password" id="password" name="password" required>
+            <button type="submit" id="login-button" class="submit-button" onclick="loginFunction(event)">Войти
+            </button>
+            <div class="link-container">
+                <p><a href="#" onclick="switchForm('recovery-form')" class="left-link">Восстановление пароля</a></p>
+                <p><a href="#" onclick="switchForm('register-form')" class="right-link">Зарегистрироваться</a></p>
+            </div>
+
+        </form>
+        <!-- Форма Регистрации -->
+        <form id="register-form" class="form-container">
+            <h2>Регистрация</h2>
+            <input type="text" id="username" name="username" placeholder="Имя" required>
+            <input type="tel" id="phone_num" name="phone_num" placeholder="Номер телефона" required>
+            <input type="email" id="email" name="email" placeholder="Почта" required>
+            <input type="password" id="password" name="password" placeholder="Пароль" required>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Подтверждение пароля"
+                   required>
+            <button type="submit" id="register-button" class="submit-button" onclick="registerFunction(event)">
+                Зарегистрироваться
+            </button>
+            <div class="link-container-register">
+                <p><a href="#" onclick="switchForm('login-form')">Войти</a></p>
+            </div>
+        </form>
+        <!-- Форма Восстановления -->
+        <form id="recovery-form" class="form-container">
+            <h2>Восстановление пароля</h2>
+            <input type="email" placeholder="Почта" required>
+            <button onclick="recoveryFunction()">Восстановить</button>
+            <div class="link-container-register">
+                <p><a href="#" onclick="switchForm('login-form')">Войти</a></p>
+            </div>
+        </form>
+    </div>
+</div>
