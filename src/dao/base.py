@@ -1,8 +1,6 @@
-from enum import unique
 from typing import TypeVar, Generic, List
 from pydantic import BaseModel
 from sqlalchemy import select, update as sqlalchemy_update, delete as sqlalchemy_delete
-from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload

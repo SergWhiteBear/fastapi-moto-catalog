@@ -1,5 +1,3 @@
-from typing import Optional
-
 from pydantic import BaseModel, Field, ConfigDict
 
 from src.dao.database import generate_moto_id
@@ -24,7 +22,7 @@ class SMotoFilter(BaseModel):
 
 
 class SMotoUpdate(SMotoFilter):
-    image_url: list[str]
+    pass
 
 
 class SEngineWrite(EngineModel):
@@ -61,4 +59,3 @@ class SMotoRead(SMotoWrite):
     frame_num: str = Field(default=generate_moto_id(), exclude=True)
     engine: SEngineRead
     image_url: list[str] = Field(exclude=True)
-

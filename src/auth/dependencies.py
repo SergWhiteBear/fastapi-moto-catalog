@@ -3,7 +3,7 @@ from jose import jwt, JWTError
 from datetime import datetime, timezone
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.config import settings
-from src.exceptions import TokenExpiredException, NoJwtException, NoUserIdException, ForbiddenException, TokenNoFound
+from src.exceptions import TokenExpiredException, NoJwtException, NoUserIdException, ForbiddenException
 from src.user.dao import UsersDAO
 from src.user.models import User
 from src.dao.session_maker import SessionDep
