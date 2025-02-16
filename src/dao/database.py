@@ -2,9 +2,9 @@ import random
 import string
 from datetime import datetime
 from typing import Dict, Any, Annotated
-from sqlalchemy import TIMESTAMP, func, Integer
+from sqlalchemy import TIMESTAMP, func, Integer, ForeignKey
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker, AsyncAttrs
-from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column, relationship
 from src.config import database_url
 
 engine = create_async_engine(url=database_url)
@@ -42,3 +42,10 @@ class Base(AsyncAttrs, DeclarativeBase):
     def to_dict(self) -> Dict[str, Any]:
         # Метод для преобразования объекта в словарь
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class BasketMoto(Base):
+    id: Mapped[int] = mapped_column(ForeignKey("baskets.id", ondelete="CASCADE"), primary_key=True)
+    moto_id: Mapped[int] = mapped_column(ForeignKey("motos.id", ondelete="CASCADE"), primary_key=True)
+    basket: Mapped["Basket"] = relationship(back_populates="motos")
+    moto: Mapped["Moto"] = relationship(back_populates="baskets")

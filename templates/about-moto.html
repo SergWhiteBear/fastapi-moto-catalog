@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block style_page%}
+<link rel="stylesheet" href="{{ url_for('static', path='header.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='loading-spinner.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='about-moto.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='slider.css') }}">
+{% endblock %}
+
+{% block header %}
+{% include 'about-moto-header.html' %}
+{% endblock %}
+
+{% block content %}
+{% include 'loading-spinner.html' %}
+
+<div id="page-content">
+
+</div>
+<script src="/js/about-moto.js"></script>
+
+
+{% endblock %}

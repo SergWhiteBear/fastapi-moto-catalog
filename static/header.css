@@ -1,0 +1,44 @@
+/* Стили для заголовка */
+#header {
+    width: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #000000;
+    box-shadow: 0 0 10px rgba(122, 122, 122, 0.5);
+}
+
+#header h1 {
+    font-size: 24px;
+    margin: 20px;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+/* Общие стили для кнопок и ссылок */
+.header-buttons button,
+.header-buttons a {
+    border: 1px solid #000000;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #ffffff;
+    text-decoration: none; /* Убирает подчеркивание у ссылки */
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
+    margin: 0 10px;
+    border-radius: 4px;
+    display: inline-block; /* Делает <a> блочным элементом */
+}
+
+/* Ховер-эффект для кнопок и ссылок */
+.header-buttons button:hover,
+.header-buttons a:hover {
+    color: #000000;
+    box-shadow: 10px 5px 5px rgba(154, 154, 154, 0.6);
+}

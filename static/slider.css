@@ -1,0 +1,95 @@
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* Ограничиваем ширину */
+    margin-left: 50px ;
+    margin-right: 50px ;
+}
+
+.slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    width: 100%;
+    height: auto;
+    scrollbar-width: none;
+}
+
+.slider::-webkit-scrollbar {
+    display: none;
+}
+
+.slider-track {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.slide {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    overflow: hidden;
+
+}
+
+.slide-img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.slider-controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+.slider-controls button {
+    position: absolute;
+    height: 100%;
+    width: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0);
+    padding: 10px 5px;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 1;
+}
+button.prev {
+    left: 0; /* Расположение за левым краем контейнера */
+}
+
+button.next {
+    right: 0; /* Расположение за правым краем контейнера */
+}
+
+.slider-container button:active{
+    background-color: rgba(255, 255, 255, 0.2) ;
+}
+
+.slider-controls button:disabled {
+    cursor: not-allowed;
+}
+
+
+@media (max-width: 900px) {
+
+    .slider-container{
+        margin: auto
+    }
+
+}
+

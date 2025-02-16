@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from sqlalchemy import select, update as sqlalchemy_update, delete as sqlalchemy_delete
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
+
 from src.dao.database import Base
 
 T = TypeVar("T", bound=Base)
@@ -35,7 +37,6 @@ class BaseDAO(Generic[T]):
         except SQLAlchemyError as e:
             raise e
 
-
     @classmethod
     async def find_one_or_none(cls, session: AsyncSession, filters: BaseModel):
         filter_dict = filters.model_dump(exclude_unset=True)
@@ -46,7 +47,6 @@ class BaseDAO(Generic[T]):
             return record
         except SQLAlchemyError as e:
             raise e
-
 
     @classmethod
     async def add(cls, session: AsyncSession, values: BaseModel):
@@ -104,3 +104,30 @@ class BaseDAO(Generic[T]):
             await session.rollback()
             raise e
 
+    @classmethod
+    async def get_with_relationships(cls, session: AsyncSession, filters: BaseModel | None,
+                                     relationships: list[str]):
+        if filters:
+            filter_dict = filters.model_dump(exclude_unset=True, exclude_none=True)
+        else:
+            filter_dict = {}
+
+        try:
+            query = select(cls.model).filter_by(**filter_dict)
+
+            for relation in relationships:
+                relations_path = relation.split('.')
+                current_option = joinedload(getattr(cls.model, relations_path[0]))
+
+                for rel in relations_path[1:]:
+                    current_option = current_option.joinedload(
+                        getattr(getattr(cls.model, relations_path[0]).property.mapper.class_, rel))
+
+                query = query.options(current_option)
+
+            result = await session.execute(query)
+            await session.flush()
+            return result.unique().scalars().all()
+        except SQLAlchemyError as e:
+            await session.rollback()
+            raise e

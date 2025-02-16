@@ -1,43 +1,17 @@
 /* Основной стиль для всей страницы */
 body {
     font-family: Ubuntu, sans-serif;
-    background-color: #ffffff; /* Чёрный фон */
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Стили для заголовка */
-#header {
-    width: 100%;
     background-color: #ffffff;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #000000;
-    box-shadow: 0.4em 0.4em 10px rgba(122, 122, 122, 0.5);
+    flex-direction: column;
+    align-items: stretch; /* Таблица растягивается на ширину страницы */
+    margin: 0;
 }
 
-#header h1 {
-    font-size: 24px;
-    margin: 20px;
-}
-
-
-.header-buttons {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-
-}
-
-.header-buttons button:hover{
-    box-shadow: 10px 5px 5px rgba(154, 154, 154, 0.6);
-}
-
+/* Кнопки для пользовательского профиля */
+.bucket-button,
 .logout-icon,
-.profile-icon{
+.profile-icon {
     display: none;
     margin: 5px;
 }
@@ -47,239 +21,18 @@ body {
     border: none;
     cursor: pointer;
     font-size: 16px;
-    color: #000000;
     padding: 10px;
     transition: color 0.3s;
 }
 
-.login-icon:hover {
-    color: #000000;
-}
-
-/* Общие стили для модального окна */
-.modal {
-    display: none; /* Изначально модальное окно скрыто */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* Полупрозрачный фон */
-    overflow: hidden; /* Скрывает все, что выходит за пределы */
-}
-
-.modal.active {
-    display: block; /* Показать модальное окно при его вызове */
-    animation: backgroundBlur 1s forwards; /* Анимация блюра слева направо */
-}
-
-.modal-content {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Смещение для центрирования */
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1001; /* Поверх фона */
-}
-
-
-/* Анимация для постепенного появления эффекта блюра слева направо */
-@keyframes backgroundBlur {
-    0% {
-        backdrop-filter: blur(0px);
-    }
-    100% {
-        backdrop-filter: blur(8px);
-    }
-}
-
-/* Кнопка закрытия окна */
-.close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #000000;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-
-.close:hover {
-    color: #a9a9a9;
-}
-
-/* Стили для формы */
-.form-container {
-    display: none;
-}
-
-.form-container.active {
-    display: block;
-}
 
 h2 {
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 24px;
+    margin-bottom: 10px;
+    font-size: 22px;
     color: #333;
 }
 
-input[type="text"], input[type="email"], input[type="password"], input[type="tel"] {
-    width: 100%;
-    padding: 12px 15px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #000000;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 5px;
-}
-
-.modal button:hover {
-    background-color: rgba(64, 63, 63, 0.4)
-}
-
-.link-container-register {
-    display: flex;
-    justify-content: center;
-    margin-top: 5px;
-}
-
-.link-container {
-    display: flex;
-    justify-content: space-between; /* Разводит элементы по сторонам */
-    margin-top: 5px;
-}
-
-/* Стили для ссылок */
-.link-container-register a,
-.link-container a {
-    color: rgba(0, 0, 0, 0.5);
-    text-decoration: none;
-}
-
-.link-container-register a:hover,
-.link-container a:hover {
-    text-decoration: underline;
-}
-
-
-/* Для карточек мото*/
-/* Общие стили для контента */
-.content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 20px;
-    gap: 20px;
-    box-sizing: border-box;
-}
-
-/* Стили для карточек мотоциклов */
-.motorcycle-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 300px;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.motorcycle-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Стили для изображения */
-.motorcycle-image img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-}
-
-/* Стили для информации о мотоцикле */
-.motorcycle-info {
-    padding: 15px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.motorcycle-info h2 {
-    font-size: 1.5em;
-    margin: 0 0 10px 0;
-}
-
-.motorcycle-info p {
-    margin: 5px 0;
-    flex-grow: 1;
-}
-
-/* Кнопка или дополнительные элементы, если нужны */
-.motorcycle-info .details-button {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-}
-
-.motorcycle-info .details-button:hover {
-    background-color: #0056b3;
-}
-
-/* Медиа-запросы для адаптивности */
-
-/* Большие экраны (десктопы) */
-@media (min-width: 1200px) {
-    .content {
-        justify-content: flex-start;
-    }
-    .motorcycle-card {
-        max-width: 300px;
-    }
-}
-
-/* Средние экраны (планшеты) */
-@media (min-width: 768px) and (max-width: 1199px) {
-    .motorcycle-card {
-        max-width: 45%;
-    }
-}
-
-/* Маленькие экраны (мобильные устройства) */
-@media (max-width: 767px) {
-    .motorcycle-card {
-        max-width: 100%;
-    }
-}
 
 
 

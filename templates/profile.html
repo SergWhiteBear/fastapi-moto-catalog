@@ -2,32 +2,35 @@
 
 {% block title %}Профиль{% endblock %}
 
-{% block style_page%}
+{% block style_page %}
+<link rel="stylesheet" href="{{ url_for('static', path='header.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', path='profile.css') }}">
-{%endblock%}
+<link rel="stylesheet" href="{{ url_for('static', path='loading-spinner.css') }}">
+{% endblock %}
+
+{% block header %}
+{% include 'profile-header.html' %}
+{% endblock %}
 
 {% block content %}
-<header id="header">
-    <h1>Профиль</h1>
-</header>
+{% include 'loading-spinner.html' %}
 <div class="profile-container" id="profile-content">
     <!-- Контейнер для кнопок и информации -->
     <div class="left-column">
         <!-- Контейнер для кнопок -->
         <div class="buttons-container">
-
             <button id="profile-user-button">Профиль</button>
             <button id="order-info-button">Заказы</button>
-            <button id="bucket-button">Корзина</button>
-            <button id="logout-button">Выйти</button>
+            <button id="shopping-cart-button">Корзина</button>
+            <button id="support-button">Помощь</button>
+
         </div>
     </div>
 
     <div class="right-column">
-
         <!-- Информация о пользователе -->
-        <div id="userInfo" class="profile-info section">
-            <div id="profile-name" class="profile-name">Мои данные</div>
+        <div id="userInfo" class="profile-info section" style="display: none;">
+            <div id="profile-name" class="profile-name">Мои данные</div> <!-- Поменять на profile title или типо -->
             <img src="/static/icons/moto_icon.png" alt="Аватар" class="profile-avatar">
             <label for="name">Имя</label>
             <input type="text" id="name" name="name" placeholder="Имя" required>
@@ -40,7 +43,6 @@
                 <span id="profile-email" class="profile-email"></span>
                 <button id="change-email-icon" class="change-icon" onclick="changeEmail()">✎</button>
             </div>
-
             <!-- Строка для телефона -->
             <div class="profile-field">
                 <span id="profile-phone" class="profile-phone"></span>
@@ -50,41 +52,15 @@
         </div>
 
         <!-- Блок заказов -->
-        <div class="profile-orders section" id="profile-orders">
-            <button class="slider-button prev" onclick="slideOrders(-1)">&#10094;</button>
-            <div class="orders-slider" id="orders-slider">
-                <div class="order-item">
-                    <img src="/static/icons/мото1.png" alt="Мотоцикл X" class="order-image">
-                    <div class="order-info">
-                        <h3>Мотоцикл X</h3>
-                        <p>Дата заказа: 12.08.2023</p>
-                        <p>Статус: Доставлен</p>
-                    </div>
-                </div>
-                <div class="order-item">
-                    <img src="/static/icons/мото2.png" alt="Мотоцикл Y" class="order-image">
-                    <div class="order-info">
-                        <h3>Мотоцикл Y</h3>
-                        <p>Дата заказа: 20.09.2023</p>
-                        <p>Статус: В пути</p>
-                    </div>
-                </div>
-                <div class="order-item">
-                    <img src="/static/icons/мото3.png" alt="Мотоцикл Z" class="order-image">
-                    <div class="order-info">
-                        <h3>Мотоцикл Z</h3>
-                        <p>Дата заказа: 25.10.2023</p>
-                        <p>Статус: Обрабатывается</p>
-                    </div>
-                </div>
+        <div class="profile-orders section" id="profile-orders" style="display: none;">
+            <div id="profile-name" class="profile-name">Мои заказы</div><!-- Поменять на profile title или типо -->
+            <div id="orders-loading" class="loading">Загрузка...</div> <!-- Загрузочный индикатор для заказов -->
+            <div id="orders-content" class="orders-content" style="display: none;">
+                <!-- Сюда будут вставляться заказы -->
             </div>
-            <button class="slider-button next" onclick="slideOrders(1)">&#10095;</button>
         </div>
-
     </div>
 </div>
-
 <script src="/js/profile.js"></script>
-
 
 {% endblock %}

@@ -10,9 +10,10 @@ from alembic import context
 
 from src.config import database_url
 from src.dao.database import Base
-from src.auth.models import User, Role
-from src.moto.models import Moto, Engine
-
+from src.moto.models import *
+from src.user.models import *
+from src.order.models import *
+from src.payment.models import *
 
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 # this is the Alembic Config object, which provides

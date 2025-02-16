@@ -11,6 +11,7 @@ class Role(Base):
     def __repr__(self):
         return f"{self.__class__.__name__}(id={self.id}, name={self.name})"
 
+
 class User(Base):
     email: Mapped[uniq_str]
     phone_num: Mapped[uniq_str]
@@ -18,7 +19,7 @@ class User(Base):
     password: Mapped[str]
     role_id: Mapped[int] = mapped_column(ForeignKey('roles.id'), default=1, onupdate="CASCADE")
     role: Mapped["Role"] = relationship("Role", back_populates="users", lazy="joined")
+    orders: Mapped["Order"] = relationship("Order", back_populates="user")
 
     def __repr__(self):
         return f"{self.__class__.__name__}(id={self.id})"
-

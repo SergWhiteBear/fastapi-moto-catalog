@@ -2,10 +2,10 @@ from pydantic import EmailStr
 from jose import jwt
 from datetime import datetime, timedelta, timezone
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.auth.schemas import EmailModel
+from src.user.schemas import EmailModel
 from src.auth.utils import verify_password
 from src.config import settings
-from src.auth.dao import UsersDAO
+from src.user.dao import UsersDAO
 from src.dao.session_maker import SessionDep
 
 
