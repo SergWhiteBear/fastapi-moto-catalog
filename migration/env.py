@@ -13,6 +13,7 @@ from src.dao.database import Base
 from src.moto.models import *
 from src.user.models import *
 from src.order.models import *
+from src.payment.models import *
 
 sys.path.insert(0, dirname(dirname(abspath(__file__))))
 # this is the Alembic Config object, which provides

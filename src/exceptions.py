@@ -192,3 +192,8 @@ NoRecordsFoundException = HTTPException(
     status_code=status.HTTP_404_NOT_FOUND,
     detail="Записи для обновления или удаления не найдены"
 )
+
+ImpossibleTransitionException = HTTPException(
+    status_code=status.HTTP_409_CONFLICT,
+    detail="Текущий переход невозможен"
+)

@@ -25,6 +25,7 @@ class Order(Base):
 
     user: Mapped["User"] = relationship("User", back_populates="orders")
     basket_items: Mapped[List["OrderItem"]] = relationship("OrderItem", back_populates="order")
+    payment: Mapped["Payment"] = relationship("Payment", back_populates="order", uselist=False)
 
 
 class OrderItem(Base):

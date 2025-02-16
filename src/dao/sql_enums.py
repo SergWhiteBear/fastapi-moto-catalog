@@ -24,3 +24,8 @@ class OrderEnum(str, Enum):
     paid = "paid"
     backordered = "backordered"
     partial_shipped = "partial_shipped"
+
+class PaymentTypeEnum(str, Enum):
+    pending = "pending"
+    success = "success"
+    failure = "failure"
