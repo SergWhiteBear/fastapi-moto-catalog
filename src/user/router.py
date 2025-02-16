@@ -2,7 +2,7 @@ from fastapi import APIRouter, Response, Depends
 
 from src.auth.dependencies import get_current_user, get_current_admin_user
 from src.user.models import User
-from src.exceptions import UserAlreadyExistsException, IncorrectEmailOrPasswordException
+from src.exceptions import UserAlreadyExistsException, IncorrectEmailOrPasswordException, TokenNotFoundException
 from src.auth.auth import authenticate_user, create_access_token
 from src.user.dao import UsersDAO
 from src.user.schemas import SUserRegister, SUserAuth, EmailModel, SUserWrite, SUserRead
@@ -42,6 +42,8 @@ async def logout_user(response: Response):
 
 @router.get("/me/")
 async def get_me(user_data: User = Depends(get_current_user)) -> SUserRead:
+    if user_data is None:
+        raise TokenNotFoundException
     return SUserRead.model_validate(user_data)
 
 

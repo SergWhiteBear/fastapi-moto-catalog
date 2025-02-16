@@ -22,6 +22,7 @@ class OrderModel(BasketModel):
     total_price: float = Field(default=0.0)
 
 class OrderFilter(BaseModel):
+    id: int | None = None
     user_id: int | None = None
     guest_id: str | None = None
     status: str | None = None
